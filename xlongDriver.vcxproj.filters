@@ -20,6 +20,12 @@
     <Filter Include="communication">
       <UniqueIdentifier>{9d1617d3-6f0f-4a7a-9457-5cb6dc03e899}</UniqueIdentifier>
     </Filter>
+    <Filter Include="mem">
+      <UniqueIdentifier>{b85a9f08-3d0b-40db-8324-4d36df7ea44b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hidewindow">
+      <UniqueIdentifier>{d6042a5a-ed97-47c8-84ba-9da9a970c371}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Inf Include="xlongDriver.inf">
@@ -42,6 +48,12 @@
     <ClInclude Include="communication.h">
       <Filter>communication</Filter>
     </ClInclude>
+    <ClInclude Include="memory.h">
+      <Filter>mem</Filter>
+    </ClInclude>
+    <ClInclude Include="include.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="xlongDriver.c">
@@ -52,6 +64,9 @@
     </ClCompile>
     <ClCompile Include="communication.c">
       <Filter>communication</Filter>
+    </ClCompile>
+    <ClCompile Include="memory.c">
+      <Filter>mem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,10 +1,31 @@
 #pragma once
-#include <ntifs.h>
 
+
+
+//获取Client地址
 #define IO_GET_CLIENTADDRESS CTL_CODE(FILE_DEVICE_UNKNOWN,0x666,METHOD_BUFFERED,FILE_SPECIAL_ACCESS)
+//隐藏窗口
+#define HIDE_WINDOW CTL_CODE(FILE_DEVICE_UNKNOWN, 0x812, METHOD_BUFFERED, FILE_ANY_ACCESS)
+#define IO_READ_REQUEST CTL_CODE(FILE_DEVICE_UNKNOWN, 0x995, METHOD_BUFFERED, FILE_ANY_ACCESS)
+#define IO_WRITE_REQUEST CTL_CODE(FILE_DEVICE_UNKNOWN, 0x996, METHOD_BUFFERED, FILE_ANY_ACCESS)
+typedef struct _KERNEL_READ_WRITE_REQUEST
+{
+	ULONG ProcessId;
+	ULONG Address;
+	PVOID pBuff;
+	ULONG size;
+}KERNEL_READ_WRITE_REQUEST, * PKERNEL_READ_WRITE_REQUEST;
 
 NTSTATUS IoControl(PDEVICE_OBJECT DeviceObject, PIRP Irp);
 
 NTSTATUS CloseCall(PDEVICE_OBJECT DeviceObject, PIRP Irp);
 
 NTSTATUS CreateCall(PDEVICE_OBJECT DeviceObject, PIRP Irp);
+typedef struct _message64
+{
+	__int64 window_result;			// 执行结果
+	__int64 window_handle;			// 窗口句柄
+	int window_attributes;				// 窗口属性
+}message64;
+
+

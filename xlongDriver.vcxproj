@@ -75,6 +75,7 @@
     <ConfigurationType>Driver</ConfigurationType>
     <DriverType>KMDF</DriverType>
     <DriverTargetPlatform>Universal</DriverTargetPlatform>
+    <Driver_SpectreMitigation>Spectre</Driver_SpectreMitigation>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
     <TargetVersion>Windows10</TargetVersion>
@@ -163,6 +164,9 @@
     <Link>
       <AdditionalOptions>/INTEGRITYCHECK %(AdditionalOptions)</AdditionalOptions>
     </Link>
+    <ClCompile>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <DriverSign>
@@ -194,12 +198,15 @@
     <ClInclude Include="communication.h" />
     <ClInclude Include="data.h" />
     <ClInclude Include="events.h" />
+    <ClInclude Include="include.h" />
+    <ClInclude Include="memory.h" />
     <ClInclude Include="msg.h" />
     <ClInclude Include="xlongDriver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="communication.c" />
     <ClCompile Include="events.c" />
+    <ClCompile Include="memory.c" />
     <ClCompile Include="xlongDriver.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
