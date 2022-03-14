@@ -28,7 +28,7 @@ NTSTATUS CloseCall(PDEVICE_OBJECT DeviceObject, PIRP Irp)
 
 NTSTATUS IoControl(PDEVICE_OBJECT DeviceObject, PIRP Irp)
 {
-	DebugMessage("IoControl was called,connection Terminated!\n");
+	//DebugMessage("IoControl was called,connection Terminated!\n");
 	UNREFERENCED_PARAMETER(DeviceObject);
 	NTSTATUS Status = STATUS_UNSUCCESSFUL;
 	ULONG ByteIO = 0;
@@ -39,18 +39,27 @@ NTSTATUS IoControl(PDEVICE_OBJECT DeviceObject, PIRP Irp)
 	ULONG ControlCode = stack->Parameters.DeviceIoControl.IoControlCode;
 	if (ControlCode == IO_GET_CLIENTADDRESS) {
 		//systemBuffer可以转为任意内容
-		PULONG OutPut = (PULONG)Irp->AssociatedIrp.SystemBuffer;
+		ULONG64* OutPut = (ULONG64*)Irp->AssociatedIrp.SystemBuffer;
 		*OutPut = ClientDLLAddress;
 		DebugMessage("address requested!\n");
 		Status = STATUS_SUCCESS;
 		ByteIO = sizeof(*OutPut);
 	}
 	else if (ControlCode == IO_READ_REQUEST) {
+		
 		PKERNEL_READ_WRITE_REQUEST ReadInput = (PKERNEL_READ_WRITE_REQUEST)Irp->AssociatedIrp.SystemBuffer;
 		PEPROCESS Process;
+		DebugMessage("Read memory:called :0x%p \n",ReadInput->Address);
 		if (NT_SUCCESS(PsLookupProcessByProcessId(ReadInput->ProcessId, &Process))) {
-			DebugMessage("Read memory:%d \n", ReadInput->pBuff);
-			KernelReadVirtualMemory(Process, ReadInput->Address, ReadInput->pBuff, ReadInput->size);
+			
+			NTSTATUS res = KernelReadVirtualMemory(Process, ReadInput->Address, ReadInput->pBuff, ReadInput->size);
+			if (res == STATUS_SUCCESS) {
+				DebugMessage("Read memory succeed  \n");
+			}
+			else {
+				DebugMessage("Read memory failed  \n");
+			}
+			
 			Status = STATUS_SUCCESS;
 			ByteIO = sizeof(*ReadInput);
 		}
@@ -60,6 +69,8 @@ NTSTATUS IoControl(PDEVICE_OBJECT DeviceObject, PIRP Irp)
 		PEPROCESS Process;
 		if (NT_SUCCESS(PsLookupProcessByProcessId(WriteInput->ProcessId, &Process))) {
 			KernelWriteVirtualMemory(Process, WriteInput->pBuff, WriteInput->Address, WriteInput->size);
+			
+			
 			Status = STATUS_SUCCESS;
 			ByteIO = sizeof(*WriteInput);
 		}

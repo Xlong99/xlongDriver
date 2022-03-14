@@ -5,4 +5,4 @@
 PDEVICE_OBJECT pDeviceObject;
 UNICODE_STRING sdev, sdos;
 //Client.dllµÄÐéÄâµØÖ·
-ULONG ClientDLLAddress;
+ULONG64 ClientDLLAddress;
